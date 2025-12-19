@@ -1,0 +1,51 @@
+{
+  "NAV": {
+    "HOME": "Home",
+    "MANAGE_BOOKING": "Manage Booking",
+    "PARTNER": "Partner with Us",
+    "LOGIN": "Login/Register"
+  },
+  "HOME": {
+    "HERO_TITLE": "The Smartest Way to Travel Egypt by Bus",
+    "HERO_SUBTITLE": "Compare prices, book your seat, and travel with ease.",
+    "SEARCH": {
+      "FROM_LABEL": "From",
+      "FROM_PLACEHOLDER": "Origin city",
+      "TO_LABEL": "To",
+      "TO_PLACEHOLDER": "Destination city",
+      "DATE_LABEL": "Departure Date",
+      "DATE_PLACEHOLDER": "Select date",
+      "BTN": "Find Trips"
+    },
+    "FEATURES": {
+      "DISCOUNTS_TITLE": "Smart Discounts",
+      "DISCOUNTS_DESC": "Access exclusive deals and save on your bus tickets with our intelligent pricing system.",
+      "COMPARE_TITLE": "Multi-Company Comparison",
+      "COMPARE_DESC": "Easily compare schedules, prices, and amenities from various bus operators all in one place.",
+      "LOYALTY_TITLE": "Loyalty Points",
+      "LOYALTY_DESC": "Earn points with every booking and redeem them for rewards on your future travels."
+    }
+  },
+  "RESULTS": {
+    "TITLE_PREFIX": "Showing results for",
+    "PASSENGER": "passenger",
+    "SORT": {
+      "LABEL": "Sort by:",
+      "EARLIEST": "Earliest Departure",
+      "CHEAPEST": "Cheapest Price"
+    },
+    "FILTERS": {
+      "TITLE": "Filter Results",
+      "COMPANY": "Company",
+      "DEPARTURE_TIME": "Departure Time",
+      "BUS_TYPE": "Bus Type",
+      "RESET": "Reset",
+      "APPLY": "Apply"
+    },
+    "CARD": {
+      "PER_SEAT": "per seat",
+      "SELECT_BTN": "Select Seat",
+      "CURRENCY": "EGP"
+    }
+  }
+}

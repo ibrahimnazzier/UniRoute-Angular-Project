@@ -1,0 +1,51 @@
+{
+  "NAV": {
+    "HOME": "الرئيسية",
+    "MANAGE_BOOKING": "إدارة الحجز",
+    "PARTNER": "كن شريكاً معنا",
+    "LOGIN": "دخول / تسجيل"
+  },
+  "HOME": {
+    "HERO_TITLE": "أذكى طريقة للسفر بالأتوبيس في مصر",
+    "HERO_SUBTITLE": "قارن الأسعار، احجز مقعدك، وسافر بكل راحة.",
+    "SEARCH": {
+      "FROM_LABEL": "من",
+      "FROM_PLACEHOLDER": "محطة المغادرة",
+      "TO_LABEL": "إلى",
+      "TO_PLACEHOLDER": "محطة الوصول",
+      "DATE_LABEL": "تاريخ السفر",
+      "DATE_PLACEHOLDER": "اختر التاريخ",
+      "BTN": "اعرض الرحلات"
+    },
+    "FEATURES": {
+      "DISCOUNTS_TITLE": "خصومات ذكية",
+      "DISCOUNTS_DESC": "احصل على عروض حصرية ووفر في تذاكرك مع نظام التسعير الذكي لدينا.",
+      "COMPARE_TITLE": "مقارنة شركات متعددة",
+      "COMPARE_DESC": "قارن المواعيد، الأسعار، والمميزات لمختلف شركات النقل في مكان واحد بسهولة.",
+      "LOYALTY_TITLE": "نقاط الولاء",
+      "LOYALTY_DESC": "اكسب نقاطاً مع كل حجز واستبدلها بمكافآت في رحلاتك القادمة."
+    }
+  },
+  "RESULTS": {
+    "TITLE_PREFIX": "نتائج البحث عن",
+    "PASSENGER": "راكب",
+    "SORT": {
+      "LABEL": "ترتيب حسب:",
+      "EARLIEST": "المغادرة مبكراً",
+      "CHEAPEST": "الأرخص سعراً"
+    },
+    "FILTERS": {
+      "TITLE": "تصفية النتائج",
+      "COMPANY": "الشركة",
+      "DEPARTURE_TIME": "وقت المغادرة",
+      "BUS_TYPE": "نوع الباص",
+      "RESET": "حذف",
+      "APPLY": "تطبيق"
+    },
+    "CARD": {
+      "PER_SEAT": "للمقعد",
+      "SELECT_BTN": "اختر المقعد",
+      "CURRENCY": "ج.م"
+    }
+  }
+}

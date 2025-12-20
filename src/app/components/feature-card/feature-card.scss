@@ -1,0 +1,45 @@
+.feature-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px; /* حواف ناعمة */
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* ظل خفيف جداً */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%; /* لضمان تساوي الارتفاعات */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    transform: translateY(-5px); /* حركة بسيطة للأعلى عند الوقوف عليه */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .icon-wrapper {
+    width: 70px;
+    height: 70px;
+    background-color: #eef2ff; /* لون خلفية فاتح للأيقونة (indigo-50) */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    
+    .icon {
+      font-size: 2rem; /* حجم الإيموجي أو الأيقونة */
+    }
+  }
+
+  .title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937; /* لون غامق */
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    color: #6b7280; /* لون رمادي للنص */
+    line-height: 1.6;
+  }
+}

@@ -46,23 +46,22 @@
   <section class="features">
     <div class="container features-grid">
       
-      <div class="feature-card">
-        <div class="icon-circle">🏷️</div>
-        <h3>{{ 'HOME.FEATURES.DISCOUNTS_TITLE' | translate }}</h3>
-        <p>{{ 'HOME.FEATURES.DISCOUNTS_DESC' | translate }}</p>
-      </div>
+      <app-feature-card 
+        icon="🗺️" 
+        [title]="'HOME.FEATURES.COVERAGE_TITLE' | translate"
+        [description]="'HOME.FEATURES.COVERAGE_DESC' | translate">
+      </app-feature-card>
+      <app-feature-card 
+        icon="⇄"
+        [title]="'HOME.FEATURES.COMPARE_TITLE' | translate"
+        [description]="'HOME.FEATURES.COMPARE_DESC' | translate">
+      </app-feature-card>
 
-      <div class="feature-card">
-        <div class="icon-circle">⇄</div>
-        <h3>{{ 'HOME.FEATURES.COMPARE_TITLE' | translate }}</h3>
-        <p>{{ 'HOME.FEATURES.COMPARE_DESC' | translate }}</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon-circle">⭐</div>
-        <h3>{{ 'HOME.FEATURES.LOYALTY_TITLE' | translate }}</h3>
-        <p>{{ 'HOME.FEATURES.LOYALTY_DESC' | translate }}</p>
-      </div>
+      <app-feature-card 
+        icon="🛡️" 
+        [title]="'HOME.FEATURES.TRANSPARENCY_TITLE' | translate"
+        [description]="'HOME.FEATURES.TRANSPARENCY_DESC' | translate">
+      </app-feature-card>
 
     </div>
   </section>

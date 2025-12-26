@@ -1,0 +1,49 @@
+// pagination.component.scss
+
+.page-link {
+  // 1. جعل الدائرة مثالية
+  width: 40px;
+  height: 40px;
+  border-radius: 50% !important;
+  
+  // 2. توسيط المحتوى (الأيقونة أو الرقم) في المنتصف تماماً
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // 3. التنسيقات الجمالية
+  padding: 0; // مهم جداً لإلغاء إزاحة البوتستراب
+  border: none;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none; // إزالة الخط تحت الرابط
+
+  &:hover {
+    background-color: #e2e6ea;
+    color: #000;
+    transform: translateY(-2px); // رفعة بسيطة عند التحويم
+  }
+}
+
+// حالة الزر النشط (Active)
+.page-item.active .page-link {
+  background-color: #4F46E5; // لون البراند الخاص بك
+  color: white;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}
+
+// حالة الزر المعطل (Disabled)
+.page-item.disabled .page-link {
+  background-color: transparent;
+  color: #d1d5db;
+  pointer-events: none;
+  cursor: default;
+}
+
+// 4. ضبط حجم الأيقونة نفسها
+.material-symbols-outlined {
+  font-size: 20px; // حجم مناسب داخل الدائرة 40px
+  line-height: 1;  // منع حدوث إزاحة عمودية
+  font-weight: normal; // الأيقونات عادة لا تحتاج bold
+}

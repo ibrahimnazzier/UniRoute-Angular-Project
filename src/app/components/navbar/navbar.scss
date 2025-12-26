@@ -1,0 +1,105 @@
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); // ظل ناعم
+  position: sticky;
+  top: 0;
+  z-index: 1000; // لضمان ظهوره فوق المحتوى
+  height: 70px;
+  display: flex;
+  align-items: center;
+
+  .navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; // عرض المحتوى
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  // 1. Logo Styles
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .icon {
+      color: #4f46e5; // اللون الأساسي (Indigo)
+    }
+  }
+
+  // 2. Links Styles
+  .nav-links {
+    display: flex;
+    gap: 30px;
+
+    a {
+      text-decoration: none;
+      color: #4b5563; // لون رمادي
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #4f46e5;
+      }
+
+      &.active {
+        color: #4f46e5;
+        font-weight: 700;
+      }
+    }
+  }
+
+  // 3. Actions Styles
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .btn-login {
+      background-color: #eef2ff; // خلفية فاتحة جداً
+      color: #4f46e5;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background-color: #e0e7ff;
+      }
+    }
+
+    .btn-lang {
+      background: none;
+      border: 1px solid #e5e7eb;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #374151;
+
+      &:hover {
+        background-color: #f9fafb;
+        border-color: #d1d5db;
+      }
+    }
+  }
+}
+
+// Media Query للموبايل (إخفاء الروابط مؤقتاً)
+@media (max-width: 768px) {
+  .nav-links {
+    display: none !important; // سنحتاج لعمل قائمة جانبية لاحقاً
+  }
+}

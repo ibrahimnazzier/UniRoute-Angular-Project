@@ -1,0 +1,23 @@
+.trip-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; // تأثير الظل عند التحويم
+  }
+}
+
+.company-section {
+  min-width: 100px;
+}
+
+// تعديل ألوان الـ Badge لتشبه Tailwind (Primary Light)
+.bg-primary-subtle {
+  background-color: rgba(13, 110, 253, 0.1) !important; // لون أزرق فاتح جداً
+  color: #0d6efd !important;
+}
+
+// تحسين شكل السهم ليكون في المنتصف
+.material-symbols-outlined {
+  vertical-align: middle;
+}

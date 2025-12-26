@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="container navbar-content">
+    
+    <a routerLink="/" class="logo">
+      <i class="bi bi-bus-front-fill icon"></i> UniBus
+    </a>
+
+    <div class="nav-links">
+       </div>
+
+    <div class="nav-actions">
+      
+      <button class="btn-lang" *ngIf="currentLang === 'en'" (click)="changeLang('ar')">
+         العربية
+      </button>
+      <button class="btn-lang" *ngIf="currentLang === 'ar'" (click)="changeLang('en')">
+         English
+      </button>
+    </div>
+
+  </div>
+</nav>

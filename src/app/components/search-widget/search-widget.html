@@ -1,0 +1,76 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-widget" [class.loading]="isLoading">
+  
+  <div class="fields-container">
+    
+    <div class="search-group">
+      <label class="field-label">{{ 'HOME.SEARCH.FROM_LABEL' | translate }}</label>
+      <div class="input-wrapper" [class.error]="isFieldInvalid('from')">
+        <i class="bi bi-geo-alt-fill icon"></i> 
+        <input 
+          type="text" 
+          formControlName="from" 
+          (input)="onSearchInput($event, 'from')"
+          (focus)="onSearchInput($event, 'from')"
+          (blur)="hideListDelayed('from')"
+          [placeholder]="'HOME.SEARCH.FROM_PLACEHOLDER' | translate"
+          autocomplete="off">
+
+        <ul class="suggestions-list" *ngIf="showFromList && filteredFromLocations.length > 0">
+          <li *ngFor="let gov of filteredFromLocations" (click)="selectOption(gov, 'from')">
+            <i class="bi bi-geo-alt"></i> 
+            {{ translate.currentLang === 'ar' ? gov.ar : gov.en }}
+          </li>
+        </ul>
+      </div>
+      <div class="error-msg" *ngIf="isFieldInvalid('from')">{{ 'HOME.ERRORS.REQUIRED' | translate }}</div>
+    </div>
+
+    <div class="search-group">
+      <label class="field-label">{{ 'HOME.SEARCH.TO_LABEL' | translate }}</label>
+      <div class="input-wrapper" [class.error]="isFieldInvalid('to')">
+        <i class="bi bi-flag-fill icon"></i>
+        <input 
+          type="text" 
+          formControlName="to" 
+          (input)="onSearchInput($event, 'to')"
+          (focus)="onSearchInput($event, 'to')"
+          (blur)="hideListDelayed('to')"
+          [placeholder]="'HOME.SEARCH.TO_PLACEHOLDER' | translate"
+          autocomplete="off">
+
+        <ul class="suggestions-list" *ngIf="showToList && filteredToLocations.length > 0">
+          <li *ngFor="let gov of filteredToLocations" (click)="selectOption(gov, 'to')">
+            <i class="bi bi-geo-alt"></i> 
+            {{ translate.currentLang === 'ar' ? gov.ar : gov.en }}
+          </li>
+        </ul>
+      </div>
+      <div class="error-msg" *ngIf="isFieldInvalid('to')">{{ 'HOME.ERRORS.REQUIRED' | translate }}</div>
+    </div>
+
+    <div class="search-group">
+      <label class="field-label">{{ 'HOME.SEARCH.DATE_LABEL' | translate }}</label>
+      <div class="input-wrapper" [class.error]="isFieldInvalid('date')">
+        <i class="bi bi-calendar-event icon"></i>
+        <input 
+          #dateInput
+          type="text" 
+          formControlName="date"
+          [min]="minDate"
+          [placeholder]="'HOME.SEARCH.DATE_PLACEHOLDER' | translate"
+          onfocus="(this.type='date')"
+          onblur="(this.value ? this.type='date' : this.type='text')" 
+          class="date-input">
+      </div>
+      <div class="error-msg" *ngIf="isFieldInvalid('date')">{{ 'HOME.ERRORS.REQUIRED' | translate }}</div>
+    </div>
+
+    <div class="search-group btn-group">
+      <button type="submit" [disabled]="searchForm.invalid || isLoading">
+        <span *ngIf="!isLoading">{{ 'HOME.SEARCH.BTN' | translate }}</span>
+        <span *ngIf="isLoading">...</span>
+      </button>
+    </div>
+
+  </div> 
+</form>

@@ -16,7 +16,7 @@
         <div class="d-flex justify-content-between justify-content-md-start align-items-center mb-3">
           <div class="text-center text-md-start">
             <h5 class="fw-bold mb-0">{{ trip.departureTime }}</h5>
-            <small class="text-muted">{{ trip.sourceStationName }}</small>
+            <small class="text-muted">{{ trip.departureStationName }}</small>
           </div>
 
           <div class="mx-3 mx-md-5 text-center text-muted">
@@ -26,7 +26,7 @@
 
           <div class="text-center text-md-start">
             <h5 class="fw-bold mb-0">{{ trip.arrivalTime }}</h5>
-            <small class="text-muted">{{ trip.destinationStationName }}</small>
+            <small class="text-muted">{{ trip.arrivalStationName }}</small>
           </div>
         </div>
 
@@ -35,9 +35,11 @@
             {{ trip.busTypeName }}
           </span>
 
-          <span *ngFor="let amenity of trip.amenities" class="badge bg-light text-secondary border rounded-pill px-3">
-            {{ amenity }}
-          </span>
+          @for (amenity of trip.amenities; track $index) {
+            <span class="badge bg-light text-secondary border rounded-pill px-3">
+              {{ amenity }}
+            </span>
+          }
         </div>
       </div>
 

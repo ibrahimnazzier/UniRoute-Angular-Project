@@ -1,131 +1,204 @@
-import { Component } from '@angular/core';
-import { Trip } from '../../models/trip.model';
-import { TripCard } from '../../components/trip-card/trip-card';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms'; 
+
+// Models & Services
+import { Trip, Company } from '../../models/trip.model';
+import { TripService } from '../../services/trip.service'; 
+import { TripCard } from '../../components/trip-card/trip-card';
 import { PaginationComponent } from '../../components/pagination/pagination';
-import { SearchFilterComponent } from '../../components/search-filter/search-filter';
 
 @Component({
   selector: 'app-search-results',
-  imports: [TripCard, CommonModule, TranslateModule, PaginationComponent, SearchFilterComponent],
+  standalone: true,
+  imports: [TripCard, CommonModule, TranslateModule, PaginationComponent, FormsModule],
   templateUrl: './search-results.html',
   styleUrl: './search-results.scss',
 })
-export class SearchResults {
+export class SearchResults implements OnInit {
 
-  trips: Trip[] = [
-    {
-      tripId: 1,
-      companyName: 'Go Bus',
-      companyLogoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe2ouJUHIH8nNUZW62pEZQqrdNnnja6on4Jw&s', // تأكد من وجود الصورة
-      departureTime: '08:00 AM',
-      sourceStationName: 'Tahrir',
-      sourceCityName: 'Cairo',
-      arrivalTime: '11:30 AM',
-      destinationStationName: 'Alexandria',
-      destinationCityName: 'Alexandria',
-      tripDate: '2023-10-25',
-      duration: '3h 30m',
-      price: 210,
-      currency: 'EGP',
-      busTypeName: 'VIP',
-      amenities: ['WiFi', 'WC', 'AC', 'Charger'],
-      bookingUrl: ''
-    },
-    {
-      tripId: 2,
-      companyName: 'Blue Bus',
-      companyLogoUrl: 'assets/bluebus.png', // تأكد من وجود الصورة
-      departureTime: '09:15 PM',
-      sourceStationName: 'Nasr City',
-      sourceCityName: 'Cairo', // Added property
-      arrivalTime: '05:00 AM',
-      destinationStationName: 'Dahab',
-      destinationCityName: 'South Sinai', // Added property
-      tripDate: '2023-10-25', // Added property (adjust format as needed)
+  // --- Data ---
+  trips: Trip[] = [];         // Raw data from Server
+  filteredTrips: Trip[] = []; // Data after Client Filters
+  displayTrips: Trip[] = [];  // Data for current Page
+  
+  companies: Company[] = []; 
+  
+  // --- Server Filters (API) ---
+  selectedCompanyIds: number[] = [];
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+  
+  // --- Client Filters (Local) ---
+  // These options should match what 'busTypeName' usually returns
+  busTypes = ['VIP', 'Economy', 'Royal', 'Business', 'Smart', 'Elite'];
+  amenities = ['WiFi', 'WC', 'AC', 'Charger', 'Meal', 'Tablet', 'Video'];
+  
+  selectedBusTypes: string[] = [];
+  selectedAmenities: string[] = [];
 
-      duration: '7h 45m',
-      price: 350,
-      currency: 'EGP',
-      busTypeName: 'Business',
-      amenities: ['WiFi', 'WC', 'Meal', 'Tablet'],
-      bookingUrl: ''
-    },
-    {
-      tripId: 3, companyName: 'Super Jet', companyLogoUrl: 'assets/gobus.png', departureTime: '10:00 AM', sourceStationName: 'Ramses', sourceCityName: 'Cairo', arrivalTime: '02:00 PM', destinationStationName: 'Hurghada', destinationCityName: 'Red Sea', tripDate: '2023-10-25', duration: '4h', price: 200, currency: 'EGP', busTypeName: 'Classic', amenities: ['AC'],
-      bookingUrl: ''
-    },
-    {
-      tripId: 4, companyName: 'Go Bus', companyLogoUrl: 'assets/gobus.png', departureTime: '01:00 PM', sourceStationName: 'Tahrir', sourceCityName: 'Cairo', arrivalTime: '04:30 PM', destinationStationName: 'Sidi Gaber', destinationCityName: 'Alexandria', tripDate: '2023-10-25', duration: '3h 30m', price: 220, currency: 'EGP', busTypeName: 'Elite', amenities: ['WiFi', 'AC'],
-      bookingUrl: ''
-    },
-    {
-      tripId: 5, companyName: 'West Delta', companyLogoUrl: 'assets/gobus.png', departureTime: '07:00 AM', sourceStationName: 'Alex', sourceCityName: 'Alexandria', arrivalTime: '10:00 AM', destinationStationName: 'Cairo', destinationCityName: 'Cairo', tripDate: '2023-10-25', duration: '3h', price: 150, currency: 'EGP', busTypeName: 'Standard', amenities: ['AC'],
-      bookingUrl: ''
-    },
-    {
-      tripId: 6, companyName: 'Blue Bus', companyLogoUrl: 'assets/bluebus.png', departureTime: '11:00 PM', sourceStationName: 'Ramses', sourceCityName: 'Cairo', arrivalTime: '06:00 AM', destinationStationName: 'Sharm', destinationCityName: 'South Sinai', tripDate: '2023-10-25', duration: '7h', price: 400, currency: 'EGP', busTypeName: 'First Class', amenities: ['WiFi', 'Meal', 'WC'],
-      bookingUrl: ''
-    }
-  ];
-  displayTrips: Trip[] = [];  // هذه المصفوفة التي ستعرض في HTML
+  // --- Search State ---
+  searchParams: any = {}; 
+  isLoading = false;
 
-  // إعدادات الـ Pagination
+  // --- Pagination ---
   currentPage = 1;
-  itemsPerPage = 5; // اعرض 5 رحلات فقط في كل صفحة
+  itemsPerPage = 5;
   totalItems = 0;
 
-  filteredTrips: Trip[] = []; // مصفوفة جديدة للبيانات المفلترة
-  ngOnInit() {
-    this.totalItems = this.trips.length;
-    this.updateDisplayTrips();
+  constructor(
+    private router: Router,
+    private tripService: TripService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      if (navigation.extras.state['tripsData']) {
+        this.trips = navigation.extras.state['tripsData'];
+      }
+      if (navigation.extras.state['searchParams']) {
+        this.searchParams = navigation.extras.state['searchParams'];
+      }
+    } 
   }
 
-  // هذه الدالة تقطع المصفوفة وتعرض الجزء المطلوب فقط
-  onFilterApplied(filter: any) {
-    this.filteredTrips = this.trips.filter(trip => {
-
-      // 1. فلتر السعر
-      if (filter.priceMin && trip.price < filter.priceMin) return false;
-      if (filter.priceMax && trip.price > filter.priceMax) return false;
-
-      // 2. فلتر الشركات (إذا اختار المستخدم شيئاً، يجب أن تكون الشركة موجودة)
-      if (filter.companies.length > 0 && !filter.companies.includes(trip.companyName)) return false;
-
-      // 3. فلتر النوع
-      if (filter.busType.length > 0 && !filter.busType.includes(trip.busTypeName)) return false;
-
-      // 4. فلتر الخدمات (يجب أن تحتوي الرحلة على كل الخدمات المختارة - OR Logic depends on requirement)
-      // هنا سنستخدم منطق: إذا اختار خدمة، يجب أن تكون متوفرة في الرحلة
-      // 4. فلتر الخدمات
-      if (filter.amenities && filter.amenities.length > 0) {
-        const hasAllAmenities = filter.amenities.every((a: string) =>
-          (trip.amenities || []).includes(a) // <--- التعديل هنا
-        );
-        if (!hasAllAmenities) return false;
-      }
-
-      return true;
-    });
-
-    // إعادة ضبط الترقيم للصفحة الأولى وتحديث العرض
-    this.currentPage = 1;
+  ngOnInit() {
+    this.filteredTrips = [...this.trips]; 
     this.totalItems = this.filteredTrips.length;
     this.updateDisplayTrips();
+    this.loadCompanies();
   }
 
+  // 1. Load Companies
+  loadCompanies() {
+    this.tripService.getAllCompanies().subscribe({
+      next: (response: any) => {
+        // Handle { companies: [...] } structure based on your JSON logs
+        if (response.companies && Array.isArray(response.companies)) {
+          this.companies = response.companies;
+        } else if (response.items && Array.isArray(response.items)) {
+          this.companies = response.items;
+        } else if (Array.isArray(response)) {
+          this.companies = response;
+        } else {
+          this.companies = [];
+        }
+      },
+      error: (err) => console.error('Failed to load companies', err)
+    });
+  }
+
+  // --- SERVER FILTER HANDLERS (Trigger API Call) ---
+
+  toggleCompanyFilter(companyId: number, event: any) {
+    if (event.target.checked) this.selectedCompanyIds.push(companyId);
+    else this.selectedCompanyIds = this.selectedCompanyIds.filter(id => id !== companyId);
+    this.applyServerFilters();
+  }
+
+  onPriceFilterChange() {
+    this.applyServerFilters();
+  }
+
+  // --- CLIENT FILTER HANDLERS (Filter Locally) ---
+
+  toggleBusTypeFilter(type: string, event: any) {
+    if (event.target.checked) this.selectedBusTypes.push(type);
+    else this.selectedBusTypes = this.selectedBusTypes.filter(t => t !== type);
+    this.applyClientFilters();
+  }
+
+  toggleAmenityFilter(amenity: string, event: any) {
+    if (event.target.checked) this.selectedAmenities.push(amenity);
+    else this.selectedAmenities = this.selectedAmenities.filter(a => a !== amenity);
+    this.applyClientFilters();
+  }
+
+  // --- FILTER LOGIC ---
+
+  // A. Server Side (Calls API)
+  applyServerFilters() {
+    this.isLoading = true;
+
+    const requestPayload = {
+      ...this.searchParams, 
+      MinPrice: this.minPrice,
+      MaxPrice: this.maxPrice,
+      CompanyIds: this.selectedCompanyIds 
+    };
+
+    this.tripService.searchTrips(requestPayload).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.trips = response.items || [];
+        // After getting new data, re-apply local filters (Class/Amenities)
+        this.applyClientFilters();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Filter error', err);
+      }
+    });
+  }
+
+  // B. Client Side (Filters Memory Array)
+  applyClientFilters() {
+    let result = [...this.trips];
+
+    // Filter by Bus Type (Matching 'busTypeName' string)
+    if (this.selectedBusTypes.length > 0) {
+      result = result.filter(trip => 
+        trip.busTypeName && this.selectedBusTypes.some(selected => 
+          trip.busTypeName.toLowerCase().includes(selected.toLowerCase())
+        )
+      );
+    }
+
+    // Filter by Amenities (Matching 'amenities' string array)
+    if (this.selectedAmenities.length > 0) {
+      result = result.filter(trip => {
+        // If amenities is null/undefined, safe fail
+        if (!trip.amenities) return false;
+        // Trip must have ALL selected amenities
+        return this.selectedAmenities.every(a => trip.amenities!.includes(a));
+      });
+    }
+
+    this.filteredTrips = result;
+    this.totalItems = this.filteredTrips.length;
+    this.currentPage = 1;
+    this.updateDisplayTrips();
+  }
+
+  resetFilters() {
+    this.minPrice = null;
+    this.maxPrice = null;
+    this.selectedCompanyIds = [];
+    this.selectedBusTypes = [];
+    this.selectedAmenities = [];
+    
+    // Reload data from server
+    this.applyServerFilters();
+  }
+
+  // --- PAGINATION ---
   updateDisplayTrips() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    // لاحظ: نأخذ الآن من filteredTrips وليس allTrips
     this.displayTrips = this.filteredTrips.slice(startIndex, endIndex);
+    
+    // Auto-fix if page becomes empty after filtering
+    if (this.displayTrips.length === 0 && this.totalItems > 0) {
+        this.currentPage = Math.ceil(this.totalItems / this.itemsPerPage);
+        const newStart = (this.currentPage - 1) * this.itemsPerPage;
+        this.displayTrips = this.filteredTrips.slice(newStart, newStart + this.itemsPerPage);
+    }
   }
-  // دالة تستقبل الحدث من الـ Pagination Component
+
   onPageChange(newPage: number) {
     this.currentPage = newPage;
     this.updateDisplayTrips();
-    // يفضل عمل Scroll لأعلى الصفحة عند تغيير الصفحة
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

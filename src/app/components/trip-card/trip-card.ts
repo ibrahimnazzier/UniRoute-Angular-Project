@@ -48,14 +48,8 @@ trips = [
   ];
   constructor(private router: Router) {}
 
-  onBookClick() {
-    // التوجيه لصفحة التحويل الداخلية مع تمرير البيانات
-    this.router.navigate(['/redirect'], {
-      queryParams: {
-        company: this.trip.companyName,
-        logo: this.trip.companyLogoUrl,
-        url: this.trip.bookingUrl // الرابط الخارجي
-      }
-    });
-  }
+onBookClick() {
+  // Navigate to the internal Details Page
+  this.router.navigate(['/trip', this.trip.tripId]);
+}
 }

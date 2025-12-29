@@ -1,0 +1,79 @@
+<div class="container py-5">
+  
+  <h2 class="mb-4 fw-bold text-center">Live Station Board 🚍</h2>
+
+  <div class="card shadow-sm p-4 mb-5 border-0 bg-light">
+    <div class="row g-3">
+      
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Select City</label>
+        <select class="form-select" [(ngModel)]="selectedCityId" (change)="onCityChange()">
+          <option [ngValue]="null">-- Choose City --</option>
+          <option *ngFor="let city of cities" [value]="city.cityId">{{ city.cityName }}</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Select Station</label>
+        <select class="form-select" [(ngModel)]="selectedStationId" (change)="onStationChange()" [disabled]="!selectedCityId">
+          <option [ngValue]="null">-- Choose Station --</option>
+          <option *ngFor="let station of stations" [value]="station.stationId">{{ station.stationName }}</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Travel Date</label>
+        <input type="date" class="form-control" 
+               [(ngModel)]="selectedDate" 
+               (change)="onStationChange()">
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="selectedStationId">
+    
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2 text-muted">Loading schedule...</p>
+    </div>
+
+    <div *ngIf="!isLoading && departures.length > 0" class="table-responsive shadow rounded">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="bg-dark text-white">
+          <tr>
+            <th class="py-3 ps-4">Time</th>
+            <th class="py-3">Destination</th>
+            <th class="py-3">Operator</th>
+            <th class="py-3">Bus Type</th>
+            <th class="py-3 text-end pe-4">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trip of departures">
+            <td class="ps-4 fw-bold text-primary">{{ trip.departureTime }}</td>
+            
+            <td class="fw-bold">{{ trip.destinationCityName }}</td>
+            
+            <td>
+              <span class="badge bg-light text-dark border">
+                {{ trip.companyName }}
+              </span>
+            </td>
+            
+            <td class="text-muted small">{{ trip.busTypeName }}</td>
+            
+            <td class="text-end pe-4 fw-bold">{{ trip.price }} EGP</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!isLoading && departures.length === 0" class="alert alert-warning text-center">
+      No buses scheduled to depart from this station on this date.
+    </div>
+
+  </div>
+</div>

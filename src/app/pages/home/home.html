@@ -9,48 +9,19 @@
         {{ 'HOME.HERO_SUBTITLE' | translate }}
       </p>
 
-      <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-widget">
-        
-        <div class="input-group">
-          <label>{{ 'HOME.SEARCH.FROM_LABEL' | translate }}</label>
-          <div class="input-wrapper">
-            <i class="bi bi-geo-alt-fill icon"></i> <input type="text" formControlName="from" [placeholder]="'HOME.SEARCH.FROM_PLACEHOLDER' | translate">
-          </div>
-        </div>
+      <app-search-widget></app-search-widget>
 
-        <div class="input-group">
-          <label>{{ 'HOME.SEARCH.TO_LABEL' | translate }}</label>
-          <div class="input-wrapper">
-            <i class="bi bi-flag-fill icon"></i>
-            <input type="text" formControlName="to" [placeholder]="'HOME.SEARCH.TO_PLACEHOLDER' | translate">
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label>{{ 'HOME.SEARCH.DATE_LABEL' | translate }}</label>
-          <div class="input-wrapper">
-            <i class="bi bi-calendar-event-fill icon"></i>
-            <input type="date" formControlName="date">
-          </div>
-        </div>
-
-        <div class="btn-container">
-          <button type="submit" [disabled]="searchForm.invalid">
-            {{ 'HOME.SEARCH.BTN' | translate }}
-          </button>
-        </div>
-      </form>
     </div>
   </section>
 
   <section class="features">
     <div class="container features-grid">
-      
       <app-feature-card 
         icon="🗺️" 
         [title]="'HOME.FEATURES.COVERAGE_TITLE' | translate"
         [description]="'HOME.FEATURES.COVERAGE_DESC' | translate">
       </app-feature-card>
+      
       <app-feature-card 
         icon="⇄"
         [title]="'HOME.FEATURES.COMPARE_TITLE' | translate"
@@ -62,7 +33,6 @@
         [title]="'HOME.FEATURES.TRANSPARENCY_TITLE' | translate"
         [description]="'HOME.FEATURES.TRANSPARENCY_DESC' | translate">
       </app-feature-card>
-
     </div>
   </section>
 </div>

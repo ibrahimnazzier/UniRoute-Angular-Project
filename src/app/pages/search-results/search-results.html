@@ -1,27 +1,135 @@
 <div class="container py-4">
   <div class="row">
-    
-    <div class="col-lg-3 mb-4 mb-lg-0">
-      <app-search-filter (filterChange)="onFilterApplied($event)"></app-search-filter>
+
+    <div class="col-lg-3 mb-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top filter-card">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold mb-0 text-dark">Filters</h5>
+          <button class="btn btn-link text-decoration-none p-0 text-danger small fw-bold" 
+                  (click)="resetFilters()">
+            Reset All
+          </button>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-bold small text-muted text-uppercase mb-2">Price Range (EGP)</label>
+          <div class="d-flex align-items-center gap-2">
+            <input type="number" class="form-control form-control-sm text-center" placeholder="Min" 
+                   [(ngModel)]="minPrice" (change)="onPriceFilterChange()" style="max-width: 80px;">
+            <span class="text-muted fw-bold">-</span>
+            <input type="number" class="form-control form-control-sm text-center" placeholder="Max" 
+                   [(ngModel)]="maxPrice" (change)="onPriceFilterChange()" style="max-width: 80px;">
+          </div>
+        </div>
+
+        <hr class="text-muted opacity-25 my-4">
+
+        <div class="mb-4">
+          <label class="form-label fw-bold small text-muted text-uppercase mb-3">Bus Operators</label>
+          
+          <div *ngIf="companies.length === 0" class="text-center py-2">
+            <div class="spinner-border spinner-border-sm text-primary mb-1" role="status"></div>
+            <p class="text-muted small mb-0">Loading...</p>
+          </div>
+
+          <div class="d-flex flex-column gap-2 company-list" *ngIf="companies.length > 0">
+            <div class="form-check" *ngFor="let company of companies">
+              <input class="form-check-input" type="checkbox" 
+                     [id]="'comp-' + company.companyId"
+                     [checked]="selectedCompanyIds.includes(company.companyId)"
+                     (change)="toggleCompanyFilter(company.companyId, $event)">
+              
+              <label class="form-check-label d-flex align-items-center gap-2" [for]="'comp-' + company.companyId">
+                <div class="company-logo-wrapper" *ngIf="company.logoUrl">
+                   <img [src]="company.logoUrl" [alt]="company.companyName">
+                </div>
+                <span class="text-dark small fw-medium">{{ company.companyName }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="text-muted opacity-25 my-4">
+
+        <div class="mb-4">
+          <label class="form-label fw-bold small text-muted text-uppercase mb-3">Class</label>
+          <div class="d-flex flex-column gap-2">
+            <div class="form-check" *ngFor="let type of busTypes">
+              <input class="form-check-input" type="checkbox" [id]="'type-' + type"
+                     [checked]="selectedBusTypes.includes(type)"
+                     (change)="toggleBusTypeFilter(type, $event)">
+              <label class="form-check-label small text-dark" [for]="'type-' + type">
+                {{ type }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="text-muted opacity-25 my-4">
+
+        <div>
+          <label class="form-label fw-bold small text-muted text-uppercase mb-3">Amenities</label>
+          <div class="d-flex flex-wrap gap-2">
+            <div *ngFor="let amenity of amenities">
+              <input type="checkbox" class="btn-check" [id]="'amenity-' + amenity" autocomplete="off"
+                     [checked]="selectedAmenities.includes(amenity)"
+                     (change)="toggleAmenityFilter(amenity, $event)">
+              <label class="btn btn-outline-secondary btn-sm rounded-pill font-small" [for]="'amenity-' + amenity">
+                {{ amenity }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
+
     <div class="col-lg-9">
-      <h2 class="mb-4 fs-4 fw-bold">{{ 'RESULTS.SEARCH_PAGE.TITLE' | translate }}</h2>
-      
-      <div *ngIf="displayTrips.length === 0" class="alert alert-info text-center">
-        No trips found matching your filters.
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">
+          Available Trips 
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill fs-6 ms-2 align-middle">
+            {{ totalItems }}
+          </span>
+        </h4>
       </div>
 
-      @for (trip of displayTrips; track trip.tripId) {
-        <app-trip-card [trip]="trip"></app-trip-card>
-      }
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-2">Searching for best trips...</p>
+      </div>
 
-      <app-pagination
-        [totalItems]="totalItems"
-        [itemsPerPage]="itemsPerPage"
-        [currentPage]="currentPage"
-        (pageChange)="onPageChange($event)">
-      </app-pagination>
+      <div *ngIf="!isLoading">
+        <ng-container *ngIf="displayTrips.length > 0; else noResults">
+          <div class="d-flex flex-column gap-3">
+            <app-trip-card *ngFor="let trip of displayTrips" [trip]="trip"></app-trip-card>
+          </div>
+
+          <div class="mt-5 d-flex justify-content-center">
+            <app-pagination
+              [totalItems]="totalItems"
+              [itemsPerPage]="itemsPerPage"
+              [currentPage]="currentPage"
+              (pageChange)="onPageChange($event)">
+            </app-pagination>
+          </div>
+        </ng-container>
+
+        <ng-template #noResults>
+          <div class="text-center py-5 bg-white rounded-4 border border-dashed border-2">
+            <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+              <span class="material-symbols-outlined fs-1 text-muted">search_off</span>
+            </div>
+            <h5 class="fw-bold text-dark">No trips found</h5>
+            <p class="text-muted mb-3">We couldn't find any trips matching your filters.</p>
+            <button class="btn btn-outline-primary" (click)="resetFilters()">Clear All Filters</button>
+          </div>
+        </ng-template>
+      </div>
+
     </div>
 
   </div>

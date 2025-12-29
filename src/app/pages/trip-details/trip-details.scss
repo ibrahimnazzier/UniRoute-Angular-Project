@@ -1,0 +1,52 @@
+// Reuse the subtle background you liked
+.bg-primary-subtle {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+// Timeline Styles
+.timeline {
+  position: relative;
+  padding-left: 1rem;
+  
+  // The vertical line
+  &::before {
+    content: '';
+    position: absolute;
+    left: 23px; // Adjust based on marker size
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+  padding-left: 3rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 15px; // Center on the line
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid #fff; // White ring effect
+  box-shadow: 0 0 0 2px #e9ecef; // Outer ring
+  z-index: 1; // Sit on top of line
+  
+  // Custom colors for specific markers are handled by utility classes (bg-success, bg-danger)
+}
+
+.timeline-content {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.75rem; // rounded-3
+}

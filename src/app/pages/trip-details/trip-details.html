@@ -1,0 +1,173 @@
+<div class="container py-5" *ngIf="trip; else loading">
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-md-row align-items-center">
+
+                <div class="text-center d-flex flex-column align-items-center mb-3 mb-md-0" style="min-width: 120px;">
+                    <img [src]="trip.company?.logoUrl" [alt]="trip.company?.companyName"
+                        class="img-fluid mb-2 rounded border p-1"
+                        style="height: 60px; width: 60px; object-fit: contain;">
+
+                    <h5 class="fw-bold mb-0 text-dark">{{ trip.company?.companyName }}</h5>
+
+                    <span class="badge bg-primary-subtle rounded-pill mt-1" *ngIf="trip.busType">
+                        {{ trip.busType.typeName }}
+                    </span>
+                </div>
+
+
+                <div class="vr d-none d-md-block mx-4 text-muted opacity-25" style="height: 100px;"></div>
+                <hr class="d-md-none w-100 my-3 text-muted opacity-25">
+
+                <div class="flex-grow-1 w-100 px-md-3">
+                    <div class="d-flex justify-content-between align-items-center text-center">
+
+                        <div class="text-start">
+                            <div class="display-6 fw-bold text-dark">{{ trip.departureTime | slice:0:5 }}</div>
+                            <div class="text-muted fs-5">{{ trip.departureStation?.cityName }}</div>
+                            <small class="text-muted d-block">{{ trip.tripDate | date:'mediumDate' }}</small>
+                        </div>
+
+                        <div class="px-3 text-muted">
+                            <small class="d-block mb-1">{{ trip.duration || '--' }}</small>
+                            <div class="d-flex align-items-center opacity-50">
+                                <div style="height: 2px; background: #ccc; width: 60px;"></div>
+                                <span class="material-symbols-outlined mx-2">bus_alert</span>
+                                <div style="height: 2px; background: #ccc; width: 60px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <div class="display-6 fw-bold text-dark">
+                                {{ trip.arrivalTime ? (trip.arrivalTime | slice:0:5) : '--:--' }}
+                            </div>
+                            <div class="text-muted fs-5">{{ trip.arrivalStation?.cityName }}</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="vr d-none d-md-block mx-4 text-muted opacity-25" style="height: 100px;"></div>
+
+                <div class="text-center" style="min-width: 150px;">
+                    <h3 class="fw-bold text-success mb-0">{{ trip.price }} <small class="fs-6 text-muted">EGP</small>
+                    </h3>
+                    <small class="text-muted d-block mb-3">per seat</small>
+
+                    <a *ngIf="trip.externalUrl" [href]="trip.externalUrl" target="_blank"
+                        class="btn btn-primary w-100 rounded-3 fw-bold py-2">
+                        Book on Website
+                        <span class="material-symbols-outlined fs-6 align-middle ms-1">open_in_new</span>
+                    </a>
+
+                    <button *ngIf="!trip.externalUrl" class="btn btn-primary w-100 rounded-3 fw-bold py-2">
+                        Confirm Booking
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-0">Trip Itinerary</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="timeline">
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6 class="fw-bold">{{ trip.departureStation?.stationName }}</h6>
+                                <p class="text-muted mb-0 small">{{ trip.departureTime | slice:0:5 }} - Departure</p>
+                            </div>
+                        </div>
+
+                        <ng-container *ngIf="trip.tripStops && trip.tripStops.length > 0">
+                            <div class="timeline-item" *ngFor="let stop of trip.tripStops">
+                                <div class="timeline-marker bg-secondary"></div>
+                                <div class="timeline-content">
+                                    <h6 class="fw-bold text-dark">{{ stop.stationName }}</h6>
+                                    <p class="text-muted mb-0 small">Stop #{{ stop.stopOrder }}</p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-danger"></div>
+                            <div class="timeline-content">
+                                <h6 class="fw-bold">{{ trip.arrivalStation?.stationName }}</h6>
+                                <p class="text-muted mb-0 small">
+                                    {{ trip.arrivalTime ? (trip.arrivalTime | slice:0:5) : 'Time TBD' }} - Arrival
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Amenities</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <ng-container *ngIf="trip.tripFeatures && trip.tripFeatures.length > 0; else noFeatures">
+                            <span *ngFor="let feature of trip.tripFeatures"
+                                class="badge bg-light text-secondary border rounded-pill px-3 py-2 fw-normal">
+                                {{ feature }}
+                            </span>
+                        </ng-container>
+                        <ng-template #noFeatures>
+                            <span class="text-muted small">No amenities listed.</span>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Operator Info</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 d-flex align-items-center gap-3">
+                            <div class="bg-light p-2 rounded-circle">
+                                <span class="material-symbols-outlined text-primary">call</span>
+                            </div>
+                            <div>
+                                <small class="text-muted d-block">Phone Number</small>
+                                <span class="fw-medium">{{ trip.company?.phoneNumber }}</span>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-center gap-3">
+                            <div class="bg-light p-2 rounded-circle">
+                                <span class="material-symbols-outlined text-primary">language</span>
+                            </div>
+                            <div>
+                                <small class="text-muted d-block">Website</small>
+                                <a [href]="trip.company?.website" target="_blank"
+                                    class="text-decoration-none fw-medium">
+                                    Visit Website
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<ng-template #loading>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+</ng-template>

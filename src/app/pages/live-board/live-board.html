@@ -1,79 +1,102 @@
 <div class="container py-5">
-  
-  <h2 class="mb-4 fw-bold text-center">Live Station Board 🚍</h2>
 
-  <div class="card shadow-sm p-4 mb-5 border-0 bg-light">
-    <div class="row g-3">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-primary">{{ 'LIVE_BOARD.TITLE' | translate }}</h2>
+      <p class="text-muted mb-0">{{ 'LIVE_BOARD.SUBTITLE' | translate }}</p>
+    </div>
+    
+    <button class="btn btn-outline-primary" (click)="refreshBoard()">
+      <span class="material-symbols-outlined align-middle fs-5">refresh</span>
+      {{ 'LIVE_BOARD.REFRESH' | translate }}
+    </button>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+    <div class="row g-3 align-items-center">
       
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Select City</label>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small text-muted">Select City</label>
         <select class="form-select" [(ngModel)]="selectedCityId" (change)="onCityChange()">
-          <option [ngValue]="null">-- Choose City --</option>
-          <option *ngFor="let city of cities" [value]="city.cityId">{{ city.cityName }}</option>
+           <option [ngValue]="null" disabled selected>-- Select City --</option>
+           <option *ngFor="let city of cities" [ngValue]="city.cityId">
+             {{ city.cityName }}
+           </option>
         </select>
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Select Station</label>
+        <label class="form-label fw-bold small text-muted">{{ 'LIVE_BOARD.SELECT_STATION' | translate }}</label>
         <select class="form-select" [(ngModel)]="selectedStationId" (change)="onStationChange()" [disabled]="!selectedCityId">
-          <option [ngValue]="null">-- Choose Station --</option>
-          <option *ngFor="let station of stations" [value]="station.stationId">{{ station.stationName }}</option>
+          <option [ngValue]="null" disabled selected>-- {{ 'LIVE_BOARD.SELECT_STATION' | translate }} --</option>
+          <option *ngFor="let station of stations" [ngValue]="station.stationId">
+            {{ station.stationName }}
+          </option>
         </select>
       </div>
 
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Travel Date</label>
-        <input type="date" class="form-control" 
-               [(ngModel)]="selectedDate" 
-               (change)="onStationChange()">
+      <div class="col-md-5">
+        <label class="form-label fw-bold small text-muted">{{ 'LIVE_BOARD.TABLE.DESTINATION' | translate }}</label>
+        <input type="text" class="form-control" 
+               [placeholder]="'LIVE_BOARD.SEARCH_PLACEHOLDER' | translate"
+               [(ngModel)]="searchTerm" (input)="filterBoard()"
+               [disabled]="!selectedStationId">
       </div>
-
     </div>
   </div>
 
-  <div *ngIf="selectedStationId">
-    
-    <div *ngIf="isLoading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p class="mt-2 text-muted">Loading schedule...</p>
-    </div>
-
-    <div *ngIf="!isLoading && departures.length > 0" class="table-responsive shadow rounded">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="bg-dark text-white">
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light text-muted">
           <tr>
-            <th class="py-3 ps-4">Time</th>
-            <th class="py-3">Destination</th>
-            <th class="py-3">Operator</th>
-            <th class="py-3">Bus Type</th>
-            <th class="py-3 text-end pe-4">Price</th>
+            <th class="py-3 ps-4">{{ 'LIVE_BOARD.TABLE.TIME' | translate }}</th>
+            <th class="py-3">{{ 'LIVE_BOARD.TABLE.COMPANY' | translate }}</th>
+            <th class="py-3">{{ 'LIVE_BOARD.TABLE.DESTINATION' | translate }}</th>
+            <th class="py-3">{{ 'LIVE_BOARD.TABLE.CLASS' | translate }}</th>
+            <th class="py-3">{{ 'LIVE_BOARD.TABLE.STATUS' | translate }}</th>
+            <th class="py-3 text-end pe-4">{{ 'LIVE_BOARD.TABLE.PRICE' | translate }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let trip of departures">
-            <td class="ps-4 fw-bold text-primary">{{ trip.departureTime }}</td>
-            
-            <td class="fw-bold">{{ trip.destinationCityName }}</td>
+          
+          <tr *ngFor="let trip of filteredDepartures">
+            <td class="ps-4 fw-bold text-dark">{{ trip.departureTime | slice:0:5 }}</td>
             
             <td>
-              <span class="badge bg-light text-dark border">
-                {{ trip.companyName }}
+              <div class="d-flex align-items-center gap-2">
+                <img *ngIf="trip.companyLogoUrl" [src]="trip.companyLogoUrl" width="24" height="24" class="rounded-circle border">
+                <span class="fw-medium">{{ trip.companyName }}</span>
+              </div>
+            </td>
+
+            <td class="text-primary fw-bold">{{ trip.destinationCityName }}</td>
+
+            <td>
+                <span class="badge bg-light text-secondary border fw-normal">
+                    {{ 'BUS_CLASSES.' + (trip.busTypeName | uppercase) | translate }}
+                </span>
+            </td>
+
+            <td>
+              <span class="badge rounded-pill bg-success-subtle text-success">
+                {{ 'LIVE_BOARD.STATUS.ON_TIME' | translate }} 
               </span>
             </td>
-            
-            <td class="text-muted small">{{ trip.busTypeName }}</td>
-            
-            <td class="text-end pe-4 fw-bold">{{ trip.price }} EGP</td>
+
+            <td class="text-end pe-4 fw-bold">{{ trip.price }} {{ 'RESULTS.CARD.CURRENCY' | translate }}</td>
           </tr>
+
+          <tr *ngIf="filteredDepartures.length === 0">
+            <td colspan="6" class="text-center py-5 text-muted">
+              <span class="material-symbols-outlined fs-2 d-block mb-2 opacity-50">schedule</span>
+              {{ 'LIVE_BOARD.NO_DEPARTURES' | translate }}
+            </td>
+          </tr>
+
         </tbody>
       </table>
     </div>
-
-    <div *ngIf="!isLoading && departures.length === 0" class="alert alert-warning text-center">
-      No buses scheduled to depart from this station on this date.
-    </div>
-
   </div>
+
 </div>

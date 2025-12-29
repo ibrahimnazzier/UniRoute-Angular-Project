@@ -1,51 +1,130 @@
 {
-    "NAV": {
-        "HOME": "Home",
-        "MANAGE_BOOKING": "Manage Booking",
-        "PARTNER": "Partner with Us",
-        "LOGIN": "Login/Register"
+  "NAV": {
+    "HOME": "Home",
+    "OPERATORS": "Bus Operators",
+    "LIVE_STATION": "Live Station",
+    "PARTNER": "Partner with Us"
+  },
+  "HOME": {
+    "HERO_TITLE": "The Smartest Way to Travel Egypt by Bus",
+    "HERO_SUBTITLE": "Compare all operators, choose what fits your budget, and book your ticket instantly.",
+    "SEARCH": {
+      "FROM_LABEL": "From",
+      "FROM_PLACEHOLDER": "Origin city",
+      "TO_LABEL": "To",
+      "TO_PLACEHOLDER": "Destination city",
+      "DATE_LABEL": "Departure Date",
+      "DATE_PLACEHOLDER": "Select date",
+      "BTN": "Find Trips"
     },
-    "HOME": {
-        "HERO_TITLE": "The Smartest Way to Travel Egypt by Bus",
-        "HERO_SUBTITLE": "Compare all operators, choose what fits your budget, and book your ticket instantly.",
-        "SEARCH": {
-            "FROM_LABEL": "From",
-            "FROM_PLACEHOLDER": "Origin city",
-            "TO_LABEL": "To",
-            "TO_PLACEHOLDER": "Destination city",
-            "DATE_LABEL": "Departure Date",
-            "DATE_PLACEHOLDER": "Select date",
-            "BTN": "Find Trips"
-        },
-        "FEATURES": {
-            "COVERAGE_TITLE": "Wide Network Coverage",
-            "COVERAGE_DESC": "Connect with top operators across all Egyptian governorates in one platform.",
-            "COMPARE_TITLE": "Multi-Company Comparison",
-            "COMPARE_DESC": "Easily compare schedules, prices, and amenities from various bus operators all in one place.",
-            "TRANSPARENCY_TITLE": "Price Transparency",
-            "TRANSPARENCY_DESC": "No hidden fees. What you see is what you pay, with clear details on bus classes and amenities."
-        }
+    "FEATURES": {
+      "COVERAGE_TITLE": "Wide Network Coverage",
+      "COVERAGE_DESC": "Connect with top operators across all Egyptian governorates in one platform.",
+      "COMPARE_TITLE": "Multi-Company Comparison",
+      "COMPARE_DESC": "Easily compare schedules, prices, and amenities from various bus operators all in one place.",
+      "TRANSPARENCY_TITLE": "Price Transparency",
+      "TRANSPARENCY_DESC": "No hidden fees. What you see is what you pay, with clear details on bus classes and amenities."
     },
-    "RESULTS": {
-        "TITLE_PREFIX": "Showing results for",
-        "PASSENGER": "passenger",
-        "SORT": {
-            "LABEL": "Sort by:",
-            "EARLIEST": "Earliest Departure",
-            "CHEAPEST": "Cheapest Price"
-        },
-        "FILTERS": {
-            "TITLE": "Filter Results",
-            "COMPANY": "Company",
-            "DEPARTURE_TIME": "Departure Time",
-            "BUS_TYPE": "Bus Type",
-            "RESET": "Reset",
-            "APPLY": "Apply"
-        },
-        "CARD": {
-            "PER_SEAT": "per seat",
-            "SELECT_BTN": "Select Seat",
-            "CURRENCY": "EGP"
-        }
+    "ERRORS": {
+      "REQUIRED": "This field is required",
+      "INVALID_DATE": "Please select a valid date"
     }
+  },
+  "RESULTS": {
+    "TITLE_PREFIX": "Showing results for",
+    "PASSENGER": "passenger",
+    "COUNT_BADGE": "Available Trips",
+    "LOADING_TRIPS": "Searching for best trips...",
+    "SORT": {
+      "LABEL": "Sort by:",
+      "EARLIEST": "Earliest Departure",
+      "CHEAPEST": "Cheapest Price"
+    },
+    "ERRORS": {
+      "NO_TRIPS": "No trips found matching your criteria."
+    },
+    "NO_RESULTS": {
+      "TITLE": "No trips found",
+      "DESC": "We couldn't find any trips matching your filters.",
+      "BTN": "Clear All Filters"
+    },
+    "FILTERS": {
+      "TITLE": "Filter Results",
+      "RESET": "Reset All",
+      "PRICE_RANGE": "Price Range (EGP)",
+      "OPERATORS": "Bus Operators",
+      "LOADING": "Loading operators...",
+      "CLASS": "Bus Class",
+      "AMENITIES": "Amenities",
+      "COMPANY": "Company",
+      "DEPARTURE_TIME": "Departure Time",
+      "BUS_TYPE": "Bus Type",
+      "APPLY": "Apply",
+      "ALL_OPERATORS": "All Operators"
+    },
+    "CARD": {
+      "CURRENCY": "EGP",
+      "PER_SEAT": "per seat",
+      "SELECT_BTN": "Show Seat Details"
+    },
+    "SEARCH_PAGE": {
+      "TITLE": "Available Search Results",
+      "NO_RESULTS": "No trips available"
+    }
+  },
+  "AMENITIES": {
+    "WIFI": "WiFi",
+    "WC": "WC",
+    "AC": "AC",
+    "CHARGER": "Charger",
+    "MEAL": "Meal",
+    "TABLET": "Tablet",
+    "VIDEO": "Video"
+  },
+  "OPERATORS": {
+    "TITLE": "Browse by Operator",
+    "SUBTITLE": "Select a company to view all their available schedules",
+    "SELECT_COMPANY": "Select Company",
+    "CHOOSE_COMPANY_PLACEHOLDER": "-- Choose Company --",
+    "DEPARTURE_CITY": "Departure City",
+    "ARRIVAL_CITY": "Arrival City",
+    "OPTIONAL": "(Optional)",
+    "ALL_CITIES": "All Cities",
+    "LOADING": "Fetching company schedules...",
+    "RESULTS": "Results",
+    "NO_DATA_TITLE": "No trips found",
+    "NO_DATA_DESC": "Try changing the cities or selecting a different company."
+  },
+  "LIVE_BOARD": {
+    "TITLE": "Live Station Board",
+    "SUBTITLE": "Real-time departures and arrivals information",
+    "SELECT_STATION": "Select Station",
+    "SEARCH_PLACEHOLDER": "Search station name...",
+    "REFRESH": "Refresh Board",
+    "TABLE": {
+      "TIME": "Time",
+      "COMPANY": "Operator",
+      "DESTINATION": "Destination",
+      "CLASS": "Class",
+      "PRICE": "Price",
+      "STATUS": "Status",
+      "ACTION": "Action"
+    },
+    "STATUS": {
+      "ON_TIME": "On Time",
+      "DELAYED": "Delayed",
+      "BOARDING": "Boarding",
+      "DEPARTED": "Departed"
+    },
+    "NO_DEPARTURES": "No upcoming departures found for this station."
+  },
+  "BUS_CLASSES": {
+    "VIP": "VIP",
+    "ECONOMY": "Economy",
+    "ROYAL": "Royal",
+    "BUSINESS": "Business",
+    "SMART": "Smart",
+    "ELITE": "Elite",
+    "PREMIUM": "Premium"
+  }
 }

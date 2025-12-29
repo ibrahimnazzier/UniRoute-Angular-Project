@@ -6,15 +6,25 @@
     </a>
 
     <div class="nav-links">
-       </div>
+       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+         {{ 'NAV.HOME' | translate }}
+       </a>
+
+       <a routerLink="/operators" routerLinkActive="active">
+         {{ 'NAV.OPERATORS' | translate }}
+       </a>
+
+       <a routerLink="/live-board" routerLinkActive="active">
+         {{ 'NAV.LIVE_STATION' | translate }}
+       </a>
+    </div>
 
     <div class="nav-actions">
-      
       <button class="btn-lang" *ngIf="currentLang === 'en'" (click)="changeLang('ar')">
-         العربية
+          العربية
       </button>
       <button class="btn-lang" *ngIf="currentLang === 'ar'" (click)="changeLang('en')">
-         English
+          English
       </button>
     </div>
 

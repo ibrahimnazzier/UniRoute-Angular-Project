@@ -8,8 +8,9 @@
 .company-list {
   max-height: 250px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 4px; // مسافة للـ Scrollbar
 
+  // تخصيص شكل الـ Scrollbar
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -40,17 +41,32 @@
   }
 }
 
+// 👇👇 التعديل الأساسي هنا لحل مشكلة اللغة العربية 👇👇
 // Checkbox Styles
 .form-check {
   display: flex;
   align-items: center;
-  gap: 8px;
   min-height: 24px;
   
+  // 1. إلغاء مسافات Bootstrap الافتراضية التي تسبب المشاكل
+  padding-left: 0; 
+  padding-right: 0;
+  margin-bottom: 0.5rem;
+
   .form-check-input {
-    cursor: pointer;
+    // 2. إلغاء الـ Float والـ Margins القديمة
+    float: none;
+    margin-left: 0;
+    margin-right: 0;
     margin-top: 0;
     
+    // 3. الحل السحري: إضافة مسافة في "نهاية" العنصر حسب اتجاه اللغة
+    // (في العربية ستكون يسار المربع، وفي الإنجليزية يمين المربع)
+    margin-inline-end: 0.6rem; 
+
+    cursor: pointer;
+    flex-shrink: 0; // منع المربع من الانكماش
+
     &:checked {
       background-color: #0d6efd;
       border-color: #0d6efd;
@@ -60,6 +76,7 @@
   .form-check-label {
     cursor: pointer;
     user-select: none;
+    margin-top: 2px; // ضبط دقيق للمحاذاة الرأسية مع النص
   }
 }
 

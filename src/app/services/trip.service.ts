@@ -39,7 +39,17 @@ export class TripService {
   // 2. Search Trips
   // ⚠️ Return Type is now TripSearchResponse (the object with 'items' and 'totalCount')
  // trip.service.ts
+getAllStations(): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/Stations/GetAllStations`);
+}
 
+// 2. جلب الرحلات المغادرة من محطة معينة (Live Board)
+getLiveStationBoard(stationId: number): Observable<any> {
+  // افترضنا هنا أن الرابط هو /Stations/GetStationDepartures/station?StationId=...
+  // يرجى تعديل الرابط إذا كان الـ API الخاص بك مختلفاً
+  const params = new HttpParams().set('StationId', stationId);
+  return this.http.get<any>(`${this.baseUrl}/Stations/GetStationDepartures/station`, { params });
+}
 searchTrips(searchData: any): Observable<TripSearchResponse> {
   let params = new HttpParams();
 
@@ -70,6 +80,10 @@ searchTrips(searchData: any): Observable<TripSearchResponse> {
   }
 
   return this.http.get<TripSearchResponse>(`${this.baseUrl}/Trips/SearchTrips/search`, { params });
+}
+getTripsByCompany(companyId: number): Observable<any> {
+  const params = new HttpParams().set('CompanyId', companyId);
+  return this.http.get<any>(`${this.baseUrl}/Trips/GetTripsByCompany/company`, { params });
 }
   // 6. Get Trip Details
 getTripDetails(tripId: number): Observable<TripDetails> {

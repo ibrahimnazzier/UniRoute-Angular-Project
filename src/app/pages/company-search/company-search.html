@@ -1,0 +1,80 @@
+<div class="container py-5">
+  
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-primary">{{ 'OPERATORS.TITLE' | translate }}</h2>
+    <p class="text-muted">{{ 'OPERATORS.SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4 p-4 mb-5 bg-white">
+    <div class="row g-3">
+      
+      <div class="col-md-4">
+        <label class="form-label fw-bold small text-muted">{{ 'OPERATORS.SELECT_COMPANY' | translate }}</label>
+        <select class="form-select py-2" [(ngModel)]="selectedCompanyId" (change)="onCompanyChange()">
+          <option [ngValue]="null" disabled selected>{{ 'OPERATORS.CHOOSE_COMPANY_PLACEHOLDER' | translate }}</option>
+          <option *ngFor="let comp of companies" [ngValue]="comp.companyId">
+            {{ comp.companyName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold small text-muted">
+          {{ 'OPERATORS.DEPARTURE_CITY' | translate }} 
+          <span class="fw-normal">{{ 'OPERATORS.OPTIONAL' | translate }}</span>
+        </label>
+        <select class="form-select py-2" [(ngModel)]="selectedFromCity" (change)="onCityChange()" [disabled]="!selectedCompanyId">
+          <option value="">{{ 'OPERATORS.ALL_CITIES' | translate }}</option>
+          <option *ngFor="let city of cities" [value]="city.cityName">
+            {{ city.cityName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold small text-muted">
+          {{ 'OPERATORS.ARRIVAL_CITY' | translate }}
+          <span class="fw-normal">{{ 'OPERATORS.OPTIONAL' | translate }}</span>
+        </label>
+        <select class="form-select py-2" [(ngModel)]="selectedToCity" (change)="onCityChange()" [disabled]="!selectedCompanyId">
+          <option value="">{{ 'OPERATORS.ALL_CITIES' | translate }}</option>
+          <option *ngFor="let city of cities" [value]="city.cityName">
+            {{ city.cityName }}
+          </option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">{{ 'OPERATORS.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && hasSearched">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="fw-bold mb-0">
+        {{ 'OPERATORS.RESULTS' | translate }} 
+        <span class="badge bg-light text-primary rounded-pill border">{{ filteredTrips.length }}</span>
+      </h4>
+    </div>
+
+    <div class="row" *ngIf="filteredTrips.length > 0; else noData">
+      <div class="col-12 mb-3" *ngFor="let trip of filteredTrips">
+        <app-trip-card [trip]="trip"></app-trip-card>
+      </div>
+    </div>
+
+    <ng-template #noData>
+      <div class="text-center py-5 bg-light rounded-4 border border-dashed">
+        <span class="material-symbols-outlined fs-1 text-muted mb-3">directions_bus_off</span>
+        <h5 class="fw-bold">{{ 'OPERATORS.NO_DATA_TITLE' | translate }}</h5>
+        <p class="text-muted">{{ 'OPERATORS.NO_DATA_DESC' | translate }}</p>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

@@ -5,15 +5,17 @@
       <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top filter-card">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h5 class="fw-bold mb-0 text-dark">Filters</h5>
+          <h5 class="fw-bold mb-0 text-dark">{{ 'RESULTS.FILTERS.TITLE' | translate }}</h5>
           <button class="btn btn-link text-decoration-none p-0 text-danger small fw-bold" 
                   (click)="resetFilters()">
-            Reset All
+            {{ 'RESULTS.FILTERS.RESET' | translate }}
           </button>
         </div>
 
         <div class="mb-4">
-          <label class="form-label fw-bold small text-muted text-uppercase mb-2">Price Range (EGP)</label>
+          <label class="form-label fw-bold small text-muted text-uppercase mb-2">
+            {{ 'RESULTS.FILTERS.PRICE_RANGE' | translate }}
+          </label>
           <div class="d-flex align-items-center gap-2">
             <input type="number" class="form-control form-control-sm text-center" placeholder="Min" 
                    [(ngModel)]="minPrice" (change)="onPriceFilterChange()" style="max-width: 80px;">
@@ -26,11 +28,13 @@
         <hr class="text-muted opacity-25 my-4">
 
         <div class="mb-4">
-          <label class="form-label fw-bold small text-muted text-uppercase mb-3">Bus Operators</label>
+          <label class="form-label fw-bold small text-muted text-uppercase mb-3">
+            {{ 'RESULTS.FILTERS.OPERATORS' | translate }}
+          </label>
           
           <div *ngIf="companies.length === 0" class="text-center py-2">
             <div class="spinner-border spinner-border-sm text-primary mb-1" role="status"></div>
-            <p class="text-muted small mb-0">Loading...</p>
+            <p class="text-muted small mb-0">{{ 'RESULTS.FILTERS.LOADING' | translate }}</p>
           </div>
 
           <div class="d-flex flex-column gap-2 company-list" *ngIf="companies.length > 0">
@@ -53,15 +57,19 @@
         <hr class="text-muted opacity-25 my-4">
 
         <div class="mb-4">
-          <label class="form-label fw-bold small text-muted text-uppercase mb-3">Class</label>
+          <label class="form-label fw-bold small text-muted text-uppercase mb-3">
+            {{ 'RESULTS.FILTERS.CLASS' | translate }}
+          </label>
           <div class="d-flex flex-column gap-2">
             <div class="form-check" *ngFor="let type of busTypes">
               <input class="form-check-input" type="checkbox" [id]="'type-' + type"
                      [checked]="selectedBusTypes.includes(type)"
                      (change)="toggleBusTypeFilter(type, $event)">
-              <label class="form-check-label small text-dark" [for]="'type-' + type">
-                {{ type }}
+              
+             <label class="form-check-label small text-dark" [for]="'type-' + type">
+                {{ 'BUS_CLASSES.' + (type | uppercase) | translate }}
               </label>
+
             </div>
           </div>
         </div>
@@ -69,14 +77,17 @@
         <hr class="text-muted opacity-25 my-4">
 
         <div>
-          <label class="form-label fw-bold small text-muted text-uppercase mb-3">Amenities</label>
+          <label class="form-label fw-bold small text-muted text-uppercase mb-3">
+            {{ 'RESULTS.FILTERS.AMENITIES' | translate }}
+          </label>
           <div class="d-flex flex-wrap gap-2">
             <div *ngFor="let amenity of amenities">
               <input type="checkbox" class="btn-check" [id]="'amenity-' + amenity" autocomplete="off"
                      [checked]="selectedAmenities.includes(amenity)"
                      (change)="toggleAmenityFilter(amenity, $event)">
+              
               <label class="btn btn-outline-secondary btn-sm rounded-pill font-small" [for]="'amenity-' + amenity">
-                {{ amenity }}
+                {{ 'AMENITIES.' + (amenity | uppercase) | translate }}
               </label>
             </div>
           </div>
@@ -90,7 +101,7 @@
 
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0">
-          Available Trips 
+          {{ 'RESULTS.COUNT_BADGE' | translate }} 
           <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill fs-6 ms-2 align-middle">
             {{ totalItems }}
           </span>
@@ -99,7 +110,7 @@
 
       <div *ngIf="isLoading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status"></div>
-        <p class="text-muted mt-2">Searching for best trips...</p>
+        <p class="text-muted mt-2">{{ 'RESULTS.LOADING_TRIPS' | translate }}</p>
       </div>
 
       <div *ngIf="!isLoading">
@@ -123,9 +134,11 @@
             <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
               <span class="material-symbols-outlined fs-1 text-muted">search_off</span>
             </div>
-            <h5 class="fw-bold text-dark">No trips found</h5>
-            <p class="text-muted mb-3">We couldn't find any trips matching your filters.</p>
-            <button class="btn btn-outline-primary" (click)="resetFilters()">Clear All Filters</button>
+            <h5 class="fw-bold text-dark">{{ 'RESULTS.NO_RESULTS.TITLE' | translate }}</h5>
+            <p class="text-muted mb-3">{{ 'RESULTS.NO_RESULTS.DESC' | translate }}</p>
+            <button class="btn btn-outline-primary" (click)="resetFilters()">
+              {{ 'RESULTS.NO_RESULTS.BTN' | translate }}
+            </button>
           </div>
         </ng-template>
       </div>

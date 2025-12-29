@@ -2,9 +2,10 @@
   <div class="card-body p-4">
     <div class="d-flex flex-column flex-md-row align-items-center">
 
-      <div class="company-section text-center d-flex flex-col align-items-center mb-3 mb-md-0">
-        <img [src]="trip.companyLogoUrl" [alt]="trip.companyName" class="img-fluid mb-2"
-          style="height: 40px; object-fit: contain;">
+      <div class="company-section text-center d-flex flex-column align-items-center mb-3 mb-md-0">
+        <div class="company-logo-wrapper mb-2">
+          <img [src]="trip.companyLogoUrl || 'assets/images/bus-placeholder.png'" [alt]="trip.companyName">
+        </div>
         <span class="text-muted fw-medium small">{{ trip.companyName }}</span>
       </div>
 
@@ -14,32 +15,29 @@
       <div class="flex-grow-1 w-100">
 
         <div class="d-flex justify-content-between justify-content-md-start align-items-center mb-3">
+
           <div class="text-center text-md-start">
-            <h5 class="fw-bold mb-0">{{ trip.departureTime }}</h5>
+            <h5 class="fw-bold mb-0">{{ trip.departureTime | slice:0:5 }}</h5>
             <small class="text-muted">{{ trip.departureStationName }}</small>
           </div>
 
           <div class="mx-3 mx-md-5 text-center text-muted">
             <span class="material-symbols-outlined d-block">arrow_forward</span>
-            <small style="font-size: 0.75rem;">{{ trip.duration }}</small>
+            <small style="font-size: 0.75rem;">{{ displayDuration }}</small>
           </div>
 
           <div class="text-center text-md-start">
-            <h5 class="fw-bold mb-0">{{ trip.arrivalTime }}</h5>
+            <h5 class="fw-bold mb-0">{{ displayArrivalTime | slice:0:5 }}</h5>
             <small class="text-muted">{{ trip.arrivalStationName }}</small>
           </div>
         </div>
 
         <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-2">
-          <span class="badge bg-primary-subtle text-primary rounded-pill px-3">
-            {{ trip.busTypeName }}
+
+          <span *ngIf="trip.busTypeName" class="badge bg-primary-subtle text-primary rounded-pill px-3">
+            {{ 'BUS_CLASSES.' + (trip.busTypeName | uppercase) | translate }}
           </span>
 
-          @for (amenity of trip.amenities; track $index) {
-            <span class="badge bg-light text-secondary border rounded-pill px-3">
-              {{ amenity }}
-            </span>
-          }
         </div>
       </div>
 
@@ -48,14 +46,13 @@
 
       <div class="price-section text-center" style="min-width: 140px;">
         <h4 class="fw-bold text-success mb-0">
-          {{ trip.price }} <small class="fs-6 text-muted">{{ trip.currency }}</small>
+          {{ trip.price }} <small class="fs-6 text-muted">{{ 'RESULTS.CARD.CURRENCY' | translate }}</small>
         </h4>
-        <small class="text-muted d-block mb-2">per seat</small>
+        <small class="text-muted d-block mb-2">{{ 'RESULTS.CARD.PER_SEAT' | translate }}</small>
 
         <button (click)="onBookClick()"
           class="btn btn-primary w-100 fw-bold rounded-3 d-flex align-items-center justify-content-center gap-2">
-          Book Now
-          <span class="material-symbols-outlined" style="font-size: 18px;">open_in_new</span>
+          {{ 'RESULTS.CARD.SELECT_BTN' | translate }}
         </button>
 
       </div>

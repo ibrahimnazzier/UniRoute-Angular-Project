@@ -2,11 +2,12 @@ import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router'; // Import this
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule ],
+  imports: [CommonModule, RouterLink, TranslateModule, RouterLinkActive, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
